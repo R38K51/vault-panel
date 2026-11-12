@@ -38,6 +38,7 @@ const JST_MS = 9 * 60 * 60 * 1000;
 const WEEKDAYS = "日月火水木金土";
 const PRIORITY = { 高: 0, 中: 1, 低: 2 };
 const CLOSED = new Set(["完了", "中止"]);
+const FAR_DUE_DAYS = 100;
 
 const calendar = { today: [], tomorrow: [], week: [], error: "", isLoading: true };
 // Connectors join a moment after session.start, so the first calls may find none.
@@ -233,9 +234,13 @@ async function loadTodos($) {
       else if (meta.due) problems.push(`${file.name}: 〆切の形式が不正`);
       items.push({ title: meta.title || file.name.slice(0, -3), due, priority: meta.priority || "中" });
     }
+    // Due dates 100 days or more ahead go after the ones without a due date.
+    const far = addDays(today, FAR_DUE_DAYS);
+    const group = (item) => (!item.due ? 1 : item.due >= far ? 2 : 0);
     items.sort(
       (a, b) =>
-        (a.due || "9999-12-31").localeCompare(b.due || "9999-12-31") ||
+        group(a) - group(b) ||
+        a.due.localeCompare(b.due) ||
         (PRIORITY[a.priority] ?? 1) - (PRIORITY[b.priority] ?? 1) ||
         a.title.localeCompare(b.title, "ja"),
     );

@@ -1,6 +1,6 @@
 {
   "name": "vault-panel",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Claude Code の右側に、使用量、Google カレンダーの予定、Obsidian Vault の Todo を色と枠で常時表示するペイン。",
   "author": {
     "name": "R38K51"

@@ -212,6 +212,33 @@ test('a tall pane frames each section in its color; a shorter one keeps only the
   await short.unmount()
 })
 
+test('todos due 100 days or more ahead come after the ones without a due date', OPTIONS, async ($, on) => {
+  // NOW is 2026-11-01 (JST), so 2027-02-09 is 100 days ahead.
+  FILES['far.md'] = '---\ntitle: 遠い先\nstatus: 未着手\ndue: 2027-02-09\n---\n'
+  FILES['farther.md'] = '---\ntitle: もっと先\nstatus: 未着手\ndue: 2027-05-01\n---\n'
+  FILES['near.md'] = '---\ntitle: 99日先\nstatus: 未着手\ndue: 2027-02-08\n---\n'
+  try {
+    engine(on)
+    await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
+    await settle()
+    const ui = await $.ui.mount(paneWith(40))
+    const items: any[] = await ui.findAll({ type: 'Text', text: /^(超過\d+日|\d+日|期限なし) / })
+    expect(items.map(item => item.text)).toEqual([
+      '超過2日 牛乳',
+      '7日 来週の本',
+      '99日 99日先',
+      '期限なし いつか',
+      '100日 遠い先',
+      '181日 もっと先',
+    ])
+    await ui.unmount()
+  } finally {
+    delete FILES['far.md']
+    delete FILES['farther.md']
+    delete FILES['near.md']
+  }
+})
+
 test('the calendar is retried until the connector has joined', OPTIONS, async ($, on) => {
   state.mcpFailures = 2
   engine(on)

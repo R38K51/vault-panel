@@ -11,7 +11,7 @@ A Claude Code mod that keeps your rate-limit usage, today's Google Calendar even
 **制限：表示は日本語のみ、時刻は日本時間（UTC+9）です。** 非公式のコミュニティ作品で、Anthropic、Google、Obsidian とは関係ありません。
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Version 0.8.3](https://img.shields.io/badge/version-0.8.3-blue.svg)](.claude-plugin/plugin.json)
+[![Version 0.8.4](https://img.shields.io/badge/version-0.8.4-blue.svg)](.claude-plugin/plugin.json)
 [![Claude Code mod](https://img.shields.io/badge/Claude%20Code-mod-orange.svg)](https://code.claude.com/docs/en/plugins/mods/overview)
 [![Calendar and Todos: read-only](https://img.shields.io/badge/calendar%20%26%20todos-read--only-lightgrey.svg)](#faq-and-limits)
 
@@ -114,7 +114,7 @@ priority: 中
 
 - `title`: shown in the pane (the file name is used if missing).
 - `status`: a Todo is hidden only when this is `完了` (done) or `中止` (cancelled). Any other value, including `Done`, keeps it visible. No value counts as `未着手` (not started).
-- `due`: `YYYY-MM-DD`. A different format is reported as "要確認 N件" (N to check). No `due` means it sorts last.
+- `due`: `YYYY-MM-DD`. A different format is reported as "要確認 N件" (N to check). No `due` sorts after the dated ones, and a `due` 100 days or more ahead sorts after those without one.
 - `priority`: `高` (high), `中` (medium), `低` (low). Anything else, or nothing, counts as `中`.
 
 ### FAQ and limits
@@ -233,7 +233,7 @@ priority: 中
 
 - `title`：ペインに出す件名（なければファイル名）。
 - `status`：`完了` と `中止` のときだけ表示しません。それ以外の値は表示します。値がなければ `未着手` として扱います。
-- `due`：`YYYY-MM-DD`。形式が違うと「要確認 N件」と出ます。なければ最後に並びます。
+- `due`：`YYYY-MM-DD`。形式が違うと「要確認 N件」と出ます。なければ〆切のあるものの後に並び、100日以上先の〆切はさらにその後（末尾）に並びます。
 - `priority`：`高`、`中`、`低`。それ以外や空は `中` として扱います。
 
 ### よくある質問と制限

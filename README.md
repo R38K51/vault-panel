@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/icon.png" width="96" alt="vault-panel icon">
+
 # vault-panel
 
 **Your Claude Code usage, calendar and todos, always in view.**<br>
